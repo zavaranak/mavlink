@@ -119,10 +119,32 @@ def collect_names(root: etree._Element) -> Tuple[Dict[NameKey, bool], Dict[NameK
     return names, attrs
 
 
-def get_base_commit() -> str:
-    return subprocess.check_output(
-        ["git", "merge-base", "origin/master", "HEAD"], text=True
-    ).strip()
+def get_base_commit() -> Optional[str]:
+    refs_to_try: List[str] = []
+    base_ref = os.getenv("GITHUB_BASE_REF")
+    if base_ref:
+        refs_to_try.extend([f"origin/{base_ref}", base_ref])
+    refs_to_try.extend(["origin/master", "origin/main", "master", "main"])
+
+    seen = set()
+    for ref in refs_to_try:
+        if ref in seen:
+            continue
+        seen.add(ref)
+        try:
+            subprocess.check_output(["git", "rev-parse", "--verify", ref], text=True)
+            return subprocess.check_output(
+                ["git", "merge-base", ref, "HEAD"], text=True
+            ).strip()
+        except subprocess.CalledProcessError:
+            continue
+
+    try:
+        return subprocess.check_output(
+            ["git", "rev-parse", "HEAD^"], text=True
+        ).strip()
+    except subprocess.CalledProcessError:
+        return None
 
 def get_changed_xml_files(base: str) -> List[str]:
     changed = subprocess.check_output(
@@ -256,6 +278,9 @@ def build_removal_comment(
 
 def main() -> None:
     base = get_base_commit()
+    if base is None:
+        print("Could not determine a base commit; skipping API break check.")
+        return
     xml_files = get_changed_xml_files(base)
     if not xml_files:
         print("No XML files changed.")

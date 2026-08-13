@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout this repo
-        uses: actions/checkout@v7
+        uses: actions/checkout@v4
         with:
           repository: mavlink/mavlink
 
@@ -51,4 +51,3 @@ jobs:
           title: "[BOT] Add ardupilotmega dialects from ArduPilot/mavlink"
           body: "ardupilotmega.xml and its included XML copied from the ArduPilot/mavlink repository."
           base: master
-
