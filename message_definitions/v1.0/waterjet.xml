@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+<mavlink>
+  <!-- Waterjet-specific MAVLink extensions for ArduPilot. -->
+  <dialect>2</dialect>
+  <enums>
+    <enum name="RTX_GEAR_STATE">
+      <description>Resolved RTX gear state.</description>
+      <entry value="0" name="RTX_GEAR_STATE_TRANSITION">
+        <description>Requested and reported gear states do not match.</description>
+      </entry>
+      <entry value="1" name="RTX_GEAR_STATE_NEUTRAL">
+        <description>Neutral gear state.</description>
+      </entry>
+      <entry value="2" name="RTX_GEAR_STATE_FORWARD">
+        <description>Forward gear state.</description>
+      </entry>
+      <entry value="3" name="RTX_GEAR_STATE_REVERSE">
+        <description>Reverse gear state.</description>
+      </entry>
+    </enum>
+  </enums>
+  <messages>
+    <!-- Waterjet engine temperature -->
+    <message id="2323" name="BLSS_TEMPERATURE">
+      <description>Temperatures of waterjet engine from boat</description>
+      <field type="uint32_t" name="time_boot_ms" units="ms">Timestamp (time since system boot).</field>
+      <field type="float" name="t_h20">Temperature of coolant </field>
+      <field type="float" name="t_air">Temperature of air </field>
+      <field type="float" name="t_exht">Temperature of exhauster</field>
+      <field type="float" name="t_oil">Temperature of oil</field>
+      <field type="float" name="p_oil">Pressure of oil</field>
+    </message>
+    <message id="2324" name="BLSS_SYSTEM_STATUS">
+      <description>Waterjet ECU / system status</description>
+      <field type="uint32_t" name="time_boot_ms" units="ms">Timestamp (time since system boot).</field>
+      <field type="uint8_t" name="vbb1">Battery bus 1 voltage code</field>
+      <field type="uint8_t" name="vbb2">Battery bus 2 voltage code</field>
+      <field type="uint8_t" name="vbb3">Battery bus 3 voltage code</field>
+      <field type="uint8_t" name="fuel_level">Fuel level</field>
+      <field type="uint32_t" name="ecu_time">ECU time</field>
+      <field type="uint16_t" name="dashboard_err">Dashboard error flags</field>
+      <field type="uint8_t" name="dds_status">DDS status</field>
+      <field type="uint8_t" name="status_byte">Status byte</field>
+      <field type="uint8_t" name="trim_reverse_flags">Trim/reverse flags</field>
+    </message>
+    <message id="2325" name="BLSS_ENGINE_STATUS">
+      <description>Waterjet engine running status</description>
+      <field type="uint32_t" name="time_boot_ms" units="ms">Timestamp (time since system boot).</field>
+      <field type="uint16_t" name="rpm">Engine RPM</field>
+      <field type="uint16_t" name="boost">Boost</field>
+      <field type="uint16_t" name="tps">Throttle position</field>
+      <field type="uint16_t" name="baro">Barometric</field>
+      <field type="uint16_t" name="speed">Speed</field>
+      <field type="uint8_t" name="trim_position">Trim position</field>
+      <field type="uint8_t" name="reverse_position">Reverse position</field>
+      <field type="uint8_t" name="drive_mode_char">Drive mode</field>
+      <field type="int8_t" name="steering_pos">Steering position raw value</field>
+    </message>
+    <message id="2326" name="KWSK_ENGINE_STATUS">
+      <description>KWSK waterjet engine status from CAN backend.</description>
+      <field type="uint16_t" name="rpm">Engine RPM</field>
+      <field type="uint16_t" name="boost">Boost</field>
+      <field type="uint16_t" name="tps">Throttle position</field>
+      <field type="int8_t" name="gear">Gear status raw value</field>
+      <field type="int8_t" name="steering_pos">Steering position raw value</field>
+    </message>
+    <message id="2327" name="KWSK_TEMP_BAT_FUEL">
+      <description>KWSK raw temperature, battery, and fuel values from CAN backend.</description>
+      <field type="uint8_t" name="water_cooling_temp_raw">Raw water cooling temperature byte from TempsC.</field>
+      <field type="uint8_t" name="outside_air_temp_raw">Raw outside air temperature byte from TempsC.</field>
+      <field type="uint8_t" name="outside_water_temp_raw">Raw outside water temperature byte from TempsC.</field>
+      <field type="uint8_t" name="oil_temp_raw">Raw oil temperature byte from TempsC.</field>
+      <field type="uint8_t" name="air_intake_temp_raw">Raw air intake temperature byte from TempsC.</field>
+      <field type="uint8_t" name="battery_voltage_raw">Raw battery voltage byte from Battery.</field>
+      <field type="uint8_t" name="fuel_level_raw">Raw fuel level byte from Fuel.</field>
+      <field type="uint8_t" name="fuel_sensor_raw">Raw fuel sensor byte from Fuel.</field>
+    </message>
+    <message id="2328" name="RTX_ENGINE_STATUS">
+      <description>RTX engine information.</description>
+      <field type="uint16_t" name="rpm" units="rpm">Engine RPM.</field>
+      <field type="int16_t" name="boost" units="mBar">Boost pressure</field>
+      <field type="uint8_t" name="tps" units="%">Throttle position.</field>
+      <field type="int8_t" name="steering_pos">Raw steering command value.</field>
+    </message>
+    <message id="2329" name="RTX_SYSTEM_STATUS">
+      <description>RTX temperature, battery, and fuel information.</description>
+      <field type="uint8_t" name="gear_state" enum="RTX_GEAR_STATE">Resolved gear state.</field>
+      <field type="uint8_t" name="t_coolant" units="degC">Coolant temperature.</field>
+      <field type="uint8_t" name="t_air" units="degC">Air intake temperature.</field>
+      <field type="uint8_t" name="t_oil" units="degC">Oil temperature.</field>
+      <field type="uint8_t" name="t_exh" units="degC">Exhaust temperature.</field>
+      <field type="uint8_t" name="p_oil_warning">Oil pressure warning state (0=clear, 1=warning).</field>
+      <field type="uint8_t" name="bat" units="V">Battery voltage.</field>
+      <field type="uint8_t" name="fuel_level" units="%">Fuel level.</field>
+    </message>
+  </messages>
+</mavlink>
