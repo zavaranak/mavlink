@@ -18,6 +18,21 @@
         <description>Reverse gear state.</description>
       </entry>
     </enum>
+    <enum name="RTX_MODE_STATE">
+      <description>Resolved RTX drive mode.</description>
+      <entry value="0" name="RTX_MODE_STATE_UNKNOWN">
+        <description>Mode not yet received.</description>
+      </entry>
+      <entry value="1" name="RTX_MODE_STATE_NORMAL">
+        <description>Normal drive mode.</description>
+      </entry>
+      <entry value="2" name="RTX_MODE_STATE_SPORT">
+        <description>Sport drive mode.</description>
+      </entry>
+      <entry value="3" name="RTX_MODE_STATE_ECO">
+        <description>Eco drive mode.</description>
+      </entry>
+    </enum>
   </enums>
   <messages>
     <!-- Waterjet engine temperature -->
@@ -85,6 +100,7 @@
     <message id="2329" name="RTX_SYSTEM_STATUS">
       <description>RTX temperature, battery, and fuel information.</description>
       <field type="uint8_t" name="gear_state" enum="RTX_GEAR_STATE">Resolved gear state.</field>
+      <field type="uint8_t" name="mode" enum="RTX_MODE_STATE">Resolved drive mode.</field>
       <field type="uint8_t" name="t_coolant" units="degC">Coolant temperature.</field>
       <field type="uint8_t" name="t_air" units="degC">Air intake temperature.</field>
       <field type="uint8_t" name="t_oil" units="degC">Oil temperature.</field>
