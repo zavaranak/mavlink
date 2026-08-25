@@ -92,6 +92,7 @@
       <field type="uint8_t" name="p_oil_warning">Oil pressure warning state (0=clear, 1=warning).</field>
       <field type="uint8_t" name="bat" units="V">Battery voltage.</field>
       <field type="uint8_t" name="fuel_level" units="%">Fuel level.</field>
+      <field type="uint8_t" name="trim_level">Trim level (1-9), 0 if unresolved.</field>
     </message>
   </messages>
 </mavlink>
