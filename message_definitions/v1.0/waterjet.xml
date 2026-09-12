@@ -110,5 +110,28 @@
       <field type="uint8_t" name="fuel_level" units="%">Fuel level.</field>
       <field type="uint8_t" name="trim_level">Trim level (1-9), 0 if unresolved.</field>
     </message>
+    <!-- Camera obstacle avoidance: the companion computer is a sensor, the autopilot decides -->
+    <message id="2330" name="CAMERA_OA_OBSTACLE">
+      <description>One tracked obstacle from the companion-computer camera pipeline. Geometry plus advisory tracking fields; the autopilot computes all control decisions itself and never acts on cpa_m, tcpa_s or risk_score directly.</description>
+      <field type="uint64_t" name="time_usec" units="us">Capture timestamp on the companion computer clock. Logging only.</field>
+      <field type="uint16_t" name="track_id">Persistent id of this object across frames.</field>
+      <field type="int16_t" name="bearing_cd" units="cdeg">Body-relative bearing, 0 dead ahead, positive to starboard.</field>
+      <field type="float" name="range_m" units="m">Estimated range, pessimistically biased.</field>
+      <field type="float" name="size_m" units="m">Estimated real-world width.</field>
+      <field type="uint8_t" name="range_trusted">1 if range_m is within the pipeline's trusted range and the waterline and size methods agree; 0 if bearing-only and range_m is a rough estimate.</field>
+      <field type="float" name="cpa_m" units="m">Advisory closest point of approach from the pipeline's relative-motion track. Negative if unknown.</field>
+      <field type="float" name="tcpa_s" units="s">Advisory time to closest point of approach. Negative or 655.35 if diverging or unknown.</field>
+      <field type="float" name="risk_score">Advisory risk score 0.0-1.0. Logging only.</field>
+      <field type="uint8_t" name="confidence" units="%">Detection confidence.</field>
+      <field type="uint8_t" name="frames_seen">Consecutive frames this track has been seen in.</field>
+      <field type="uint8_t" name="obstacle_class">0 unknown, 1 large vessel, 2 small boat, 3 buoy, 4 static structure.</field>
+    </message>
+    <message id="2331" name="CAMERA_OA_STATUS">
+      <description>Companion-computer camera pipeline heartbeat and health, sent at a fixed rate whether or not any obstacle is detected. The autopilot's watchdog keys off this message.</description>
+      <field type="uint64_t" name="time_usec" units="us">Companion computer clock.</field>
+      <field type="uint8_t" name="pipeline_ok">1 if the vision pipeline is healthy, 0 on dropped frames, stale attitude, calibration or any other fault.</field>
+      <field type="uint8_t" name="obstacle_count">Number of currently tracked obstacles.</field>
+      <field type="float" name="frame_rate_hz" units="Hz">Achieved pipeline frame rate.</field>
+    </message>
   </messages>
 </mavlink>
