@@ -124,7 +124,7 @@
       <field type="float" name="risk_score">Advisory risk score 0.0-1.0. Logging only.</field>
       <field type="uint8_t" name="confidence" units="%">Detection confidence.</field>
       <field type="uint8_t" name="frames_seen">Consecutive frames this track has been seen in.</field>
-      <field type="uint8_t" name="obstacle_class">0 unknown, 1 large vessel, 2 small boat, 3 buoy, 4 static structure.</field>
+      <field type="uint8_t" name="obstacle_class">0 unknown, 1 large vessel, 2 small boat, 3 buoy, 4 static structure, 5 shore (a wide static contact from the water segmentation; the autopilot keeps a larger standoff from it).</field>
     </message>
     <message id="2331" name="CAMERA_OA_STATUS">
       <description>Companion-computer camera pipeline heartbeat and health, sent at a fixed rate whether or not any obstacle is detected. The autopilot's watchdog keys off this message.</description>
