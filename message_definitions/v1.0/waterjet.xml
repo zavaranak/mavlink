@@ -33,6 +33,15 @@
         <description>Eco drive mode.</description>
       </entry>
     </enum>
+    <enum name="CAMERA_OA_SECTOR_FLAGS" bitmask="true">
+      <description>Flags of CAMERA_OA_SECTORS.</description>
+      <entry value="1" name="CAMERA_OA_SECTOR_FLAGS_MASK_VALID">
+        <description>The newest frame produced a valid water mask, so free sectors are positive evidence. Clear for a box detector, whose free sectors only mean "no detection".</description>
+      </entry>
+      <entry value="2" name="CAMERA_OA_SECTOR_FLAGS_ATTITUDE_VALID">
+        <description>Vehicle attitude was available at capture time; without it the map's bearings are not compass-stabilised.</description>
+      </entry>
+    </enum>
   </enums>
   <messages>
     <!-- Waterjet engine temperature -->
@@ -132,6 +141,17 @@
       <field type="uint8_t" name="pipeline_ok">1 if the vision pipeline is healthy, 0 on dropped frames, stale attitude, calibration or any other fault.</field>
       <field type="uint8_t" name="obstacle_count">Number of currently tracked obstacles.</field>
       <field type="float" name="frame_rate_hz" units="Hz">Achieved pipeline frame rate.</field>
+    </message>
+    <message id="2332" name="CAMERA_OA_SECTORS">
+      <description>Compass-stabilised obstacle map from the companion-computer camera pipeline: the full circle in equal-angle sectors, world bearings, accumulated and filtered over time at the sensor so that one message is a clean picture, not a frame. Sector i spans [bearing0 + i*width, bearing0 + (i+1)*width). The autopilot builds its avoidance rose from this and decides itself.</description>
+      <field type="uint64_t" name="time_usec" units="us">Capture timestamp of the newest frame in the map, companion computer clock. Logging only.</field>
+      <field type="uint16_t" name="yaw_cd" units="cdeg">Vehicle yaw the sensor used for the newest frame, 0..36000. Consistency check and logging only.</field>
+      <field type="uint16_t" name="bearing0_cd" units="cdeg">World bearing of the start edge of sector 0, 0..36000 (0 = north).</field>
+      <field type="uint16_t" name="sector_cd" units="cdeg">Angular width of every sector.</field>
+      <field type="uint8_t" name="count">Sectors in use, at most 120. count * sector_cd normally covers the full circle.</field>
+      <field type="uint8_t" name="working_m" units="m">Working range of the map. A contact beyond it is reported as far (254): bearing known, range not usable. A free sector was seen clear to this range.</field>
+      <field type="uint8_t" name="flags" enum="CAMERA_OA_SECTOR_FLAGS" display="bitmask">Map flags.</field>
+      <field type="uint8_t[120]" name="range">Per sector: 0 unknown (never observed, or forgotten); 1..250 nearest contact at range = value * 0.5 m; 254 contact beyond working_m (bearing-only); 255 seen free to working_m.</field>
     </message>
   </messages>
 </mavlink>
