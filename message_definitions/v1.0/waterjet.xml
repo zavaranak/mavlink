@@ -151,7 +151,7 @@
       <field type="uint8_t" name="count">Sectors in use, at most 120. count * sector_cd normally covers the full circle.</field>
       <field type="uint8_t" name="working_m" units="m">Working range of the map. A contact beyond it is reported as far (254): bearing known, range not usable. A free sector was seen clear to this range.</field>
       <field type="uint8_t" name="flags" enum="CAMERA_OA_SECTOR_FLAGS" display="bitmask">Map flags.</field>
-      <field type="uint8_t[120]" name="range">Per sector: 0 unknown (never observed, or forgotten); 1..250 nearest contact at range = value * 0.5 m; 254 contact beyond working_m (bearing-only); 255 seen free to working_m.</field>
+      <field type="uint8_t[120]" name="range">Per sector: 0 unknown (never observed, or forgotten); 1..200 nearest contact at range = value * 0.5 m (to 100 m), 201..250 at 100 m + (value - 200) * 2 m (to 200 m); 254 contact beyond working_m (bearing-only); 255 seen free to working_m.</field>
     </message>
   </messages>
 </mavlink>
