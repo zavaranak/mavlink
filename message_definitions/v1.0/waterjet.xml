@@ -210,7 +210,7 @@
       <field type="uint8_t" name="flags" enum="CAMERA_OA_TARGET_FLAGS" display="bitmask">Target flags.</field>
     </message>
     <message id="2334" name="CAMERA_OA_TARGET_SELECT">
-      <description>The operator's target selection and the follow mode's state, sent by the autopilot to the companion (track only this id; 0 = none) and to the GCS, on every change and at 1 Hz.</description>
+      <description>The operator's target selection and the follow mode's state, sent by the autopilot to the companion and to the GCS, on every change and at 1 Hz. The companion then tracks and reports only target_id, except with target_id 0 (no selection) or state HOLD_LOST (the selection is lost): then it reports every target again, so the operator can choose the next one, and keeps the lost id should it come back.</description>
       <field type="uint16_t" name="target_id">Selected target id; 0 none.</field>
       <field type="uint8_t" name="state" enum="CAMERA_OA_TARGET_STATE">Selection / follow state.</field>
       <field type="float" name="standoff_m" units="m">Standoff distance in use.</field>
